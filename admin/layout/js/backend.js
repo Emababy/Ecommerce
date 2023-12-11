@@ -1,35 +1,3 @@
-document.addEventListener('DOMContentLoaded', function() {
-
-    let inputFields = document.querySelectorAll("input");
-
-    inputFields.forEach(function (input){
-        input.addEventListener("focus" , () => {
-            input.setAttribute("data-toggle", input.getAttribute("placeholder"));
-            input.setAttribute("placeholder","");
-        });
-
-        input.addEventListener("blur" , () => {
-            input.setAttribute("placeholder",input.getAttribute("data-toggle"));
-        });
-    });
-
-    const passwordInput = document.querySelector('input[name="password"]');
-    const passwordToggle = document.getElementById('password-toggle');
-    
-    passwordToggle.addEventListener('click', function() {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        if (type === 'password') {
-            passwordToggle.classList.remove('fa-eye-slash');
-            passwordToggle.classList.add('fa-eye');
-        } else {
-            passwordToggle.classList.remove('fa-eye');
-            passwordToggle.classList.add('fa-eye-slash');
-        }
-    });
-    
-});
-
 function confirmDelete(event) {
     event.preventDefault(); // Prevents the default behavior of the link
     

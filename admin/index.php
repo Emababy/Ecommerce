@@ -1,44 +1,40 @@
-<?php 
-    session_start();
-    $noNavbar = "";
-    $pageTitle = 'Login';
-    if (isset($_SESSION['Username'])){
-        header('Location: dashboard.php');  // redirect to dashboard page
-    }
+<?php
+session_start();
+$noNavbar = "";
+$pageTitle = 'Login';
 
-    include 'init.php';
+if (isset($_SESSION['Username'])) {
+    header('Location: dashboard.php');  // redirect to dashboard page
+}
 
-    // check if the user comes from the HTTP post request :
-    if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $username = $_POST['user'];
-        $password = $_POST['pass'];
-        $hashedPass = sha1($password);
+include 'init.php';
 
-        // check if the user is already exists:
-        $stmt = $con->prepare("SELECT 
-                                UserID, Username, Password 
-                            FROM
-                                users 
-                            WHERE 
-                                Username = ? 
-                            AND 
-                                Password = ? 
-                            AND GroupID = 1 
-                            LIMIT 1");
-                            
-        $stmt->execute(array($username, $hashedPass));
-        $row = $stmt->fetch();
-        $count = $stmt->rowCount();
+// check if the user comes from the HTTP post request :
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['user'];
+    $password = $_POST['pass'];
 
-        // if count > 0 :
-        if($count > 0){
-            $_SESSION['Username'] = $username;  // save session name 
-            $_SESSION['ID'] = $row['UserID'];  // save session ID 
+    // Hash the password using password_hash
+    $hashedPass = password_hash($password, PASSWORD_DEFAULT);
+
+    // check if the user exists
+    $stmt = $con->prepare("SELECT UserID, Username, Password FROM users WHERE Username = ? AND GroupID = 1 LIMIT 1");
+    $stmt->execute(array($username));
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // if user exists:
+    if ($userData) {
+        // Verify the entered password with the stored hashed password using password_verify
+        if (password_verify($password, $userData['Password'])) {
+            $_SESSION['Username'] = $username;  // save session name
+            $_SESSION['ID'] = $userData['UserID'];  // save session ID
             header('Location: dashboard.php');  // redirect to dashboard page
             exit();
         }
     }
+}
 ?>
+
     <!-- Login Form -->
 <div class="h-screen flex">
             <div class="hidden lg:flex w-full lg:w-1/2 login_img_section justify-around items-center">

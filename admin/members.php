@@ -100,89 +100,90 @@
                     </div>
 <?php
         } elseif($action == 'Insert'){ // Insert Page :
-
+    
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                    echo "<h1 class='text-center md:text-3xl sm:text-xl text-indigo-800'>Insert Member</h1>";
-                    echo "<div class='container text-center'>";
-                    // get var from the form :
-                    $user  =  $_POST['username'];
-                    $pass  =  $_POST['password'];
-                    $email =  $_POST['email'];
-                    $name  =  $_POST['fullName'];
-                    
-                    $hashPass = sha1($_POST['password']);
-
-                    // validate Form :
-                    $formErr = array();
-                    if (strlen($user) < 4 || strlen($user) > 20 || empty($user)){
-                        $formErr[] = '<strong>User Must Be At least 4 Characters And less than 20 characters</strong>';
-                    }
-                    if (empty($pass)){
-                        $formErr[] = '<strong>Password Can\'t Be Empty</strong>';
-                    }  
-                    if (empty($name)){
-                        $formErr[] = '<strong>Please enter Your Full Name</strong>';
-                    }
-                    if (empty($email)){
-                        $formErr[] = '<strong>Please enter Your Email Address</strong>';
-                    }
-                    if(!empty($formErr)){
-                        displayErrors($formErr);
-                    }
-                    // check if the form is submitted successfully and no errors :
-                    if (empty($formErr)){
-                        // check if user exists in db:
-                        $check = CheckDb("Username", "users", $user);
-                        if ($check == 1){
-                            ?>
-                                <script>
-                                    window.onload = function() {
-                                            swal({
-                                                title: "Error",
-                                                text: "Sorry, User Is already exists",
-                                                icon: "error",
-                                            }).then(() => {
-                                                window.location.href = 'members.php?action=Add';
-                                            });
-                                    };
-                                </script>
-                        <?php
-                        } else {
-
-                            // Insert user information in  db :
-                            $stmt = $con->prepare("INSERT INTO 
-                                                    users(Username , Password , Email , FullName , RegStatues , Date)
-                                                    VALUES(:username , :password , :email , :fullName , 1 , now())");
-                            $stmt->execute(array(
-                                'username' => $user,
-                                "password" => $hashPass,
-                                "email"=> $email,
-                                "fullName" => $name
-                            ));
-                            ?>
-                            <script>
-                                window.onload = function() {
-                                    <?php if ($stmt->rowCount() > 0): ?>
-                                        swal({
-                                            title: "Success",
-                                            text: "Member Added",
-                                            icon: "success",
-                                        }).then(() => {
-                                            window.location.href = 'members.php?action=Add';
-                                        });
-                                    <?php endif; ?>
-                                };
-                            </script>
-<?php
-                            }
-                    }
-                } else {
-                    $errorMsg = ' You\'re Not Allowed To Be Here';
-
-                    redirect($errorMsg , 4 , 'Dashboard.php');
+                echo "<h1 class='text-center md:text-3xl sm:text-xl text-indigo-800'>Insert Member</h1>";
+                echo "<div class='container text-center'>";
+                // get var from the form :
+                $user  =  $_POST['username'];
+                $pass  =  $_POST['password'];
+                $email =  $_POST['email'];
+                $name  =  $_POST['fullName'];
+        
+                // validate Form :
+                $formErr = array();
+                if (strlen($user) < 4 || strlen($user) > 20 || empty($user)){
+                    $formErr[] = '<strong>User Must Be At least 4 Characters And less than 20 characters</strong>';
                 }
+                if (empty($pass)){
+                    $formErr[] = '<strong>Password Can\'t Be Empty</strong>';
+                }  
+                if (empty($name)){
+                    $formErr[] = '<strong>Please enter Your Full Name</strong>';
+                }
+                if (empty($email)){
+                    $formErr[] = '<strong>Please enter Your Email Address</strong>';
+                }
+                if(!empty($formErr)){
+                    displayErrors($formErr);
+                }
+                
+                // check if the form is submitted successfully and no errors :
+                if (empty($formErr)){
+                    // check if user exists in db:
+                    $check = CheckDb("Username", "users", $user);
+                    if ($check == 1){
+                        ?>
+                        <script>
+                            window.onload = function() {
+                                swal({
+                                    title: "Error",
+                                    text: "Sorry, User Is already exists",
+                                    icon: "error",
+                                }).then(() => {
+                                    window.location.href = 'members.php?action=Add';
+                                });
+                            };
+                        </script>
+                        <?php
+                    } else {
+                        // Hash the password using password_hash
+                        $hashedPass = password_hash($pass, PASSWORD_DEFAULT);
+        
+                        // Insert user information in  db :
+                        $stmt = $con->prepare("INSERT INTO 
+                                                users(Username , Password , Email , FullName , RegStatues , Date)
+                                                VALUES(:username , :password , :email , :fullName , 1 , now())");
+                        $stmt->execute(array(
+                            'username' => $user,
+                            'password' => $hashedPass,
+                            'email'=> $email,
+                            'fullName' => $name
+                        ));
+        
+                        ?>
+                        <script>
+                            window.onload = function() {
+                                <?php if ($stmt->rowCount() > 0): ?>
+                                    swal({
+                                        title: "Success",
+                                        text: "Member Added",
+                                        icon: "success",
+                                    }).then(() => {
+                                        window.location.href = 'members.php?action=Add';
+                                    });
+                                <?php endif; ?>
+                            };
+                        </script>
+                        <?php
+                    }
+                }
+            } else {
+                $errorMsg = ' You\'re Not Allowed To Be Here';
+                redirect($errorMsg , 4 , 'Dashboard.php');
+            }
             echo '</div>';
-
+        
         } elseif ($action == 'Edit'){ // edit page : 
 
             // check in user id and make sure it numeric
@@ -240,19 +241,21 @@
             redirect($errorMsg , 4 , 'Dashboard.php');
         }
         } elseif($action == 'Update'){ // update page :
+
             echo "<h1 class='text-center md:text-3xl sm:text-xl text-indigo-800'>Update Member</h1>";
             echo "<div class='container text-center'>";
-
+        
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 // get var from the form :
                 $id = $_POST['ID'];
                 $user = $_POST['username'];
                 $email = $_POST['email'];
                 $name = $_POST['fullName'];
-
+        
                 // password :
-                $pass = empty($_POST['newPassword']) ?  $pass = $_POST['oldPassword'] : $pass = sha1($_POST['newPassword']);
-                
+                $newPassword = $_POST['newPassword'];
+                $oldPassword = $_POST['oldPassword'];
+        
                 // validate Form :
                 $formErr = array();
                 if (strlen($user) < 4 || strlen($user) > 20 || empty($user)){
@@ -264,9 +267,9 @@
                 if (empty($email)){
                     $formErr[] = '<strong>Please enter Your Email Address</strong>';
                 }
-                foreach ($formErr as $error){
-                    echo '<div class="alert-div my-4 p-5">' . $error  . '</div>';
-                }
+        
+                displayErrors($formErr);
+        
                 if (!empty($formErr)){
                     ?>
                         <div>
@@ -275,42 +278,43 @@
                         </div>                
                     <?php
                 }
-
+        
                 // check if the form is submitted successfully and no errors :
                 if (empty($formErr)){
-
-                    // update user information in  db :
-                    $stmt = $con->prepare("UPDATE users SET Username = ?,Email = ?,FullName = ?, Password = ? WHERE UserID = ?");
-                    $stmt->execute(array($user,$email,$name,$pass,$id));
-
+                    // Check if a new password is provided
+                    $pass = empty($newPassword) ? $oldPassword : password_hash($newPassword, PASSWORD_DEFAULT);
+        
+                    // update user information in db :
+                    $stmt = $con->prepare("UPDATE users SET Username = ?, Email = ?, FullName = ?, Password = ? WHERE UserID = ?");
+                    $stmt->execute(array($user, $email, $name, $pass, $id));
+        
                     // echo success message:
-                        ?>
-                        <script>
-                            window.onload = function() {
-                                <?php if ($stmt->rowCount() > 0): ?>
-                                    swal({
-                                        title: "Success",
-                                        text: "Member Updated",
-                                        icon: "success",
-                                    }).then(() => {
-                                        window.location.href = 'members.php?action=Edit&ID=<?php echo $id ?>';
-                                    });
-                                    <?php else: ?>
-                                        swal({
-                                            title: "Failed!",
-                                            text: "No Member Updated",
-                                            icon: "warning",
-                                        }).then(() => {
-                                            window.location.href = 'members.php?action=Edit&ID=<?php echo $id ?>';
-                                        });
-                                <?php endif; ?>
-                            };
-                        </script>   
-            <?php 
+                    ?>
+                    <script>
+                        window.onload = function() {
+                            <?php if ($stmt->rowCount() > 0): ?>
+                                swal({
+                                    title: "Success",
+                                    text: "Member Updated",
+                                    icon: "success",
+                                }).then(() => {
+                                    window.location.href = 'members.php?action=Edit&ID=<?php echo $id ?>';
+                                });
+                            <?php else: ?>
+                                swal({
+                                    title: "Failed!",
+                                    text: "No Member Updated",
+                                    icon: "warning",
+                                }).then(() => {
+                                    window.location.href = 'members.php?action=Edit&ID=<?php echo $id ?>';
+                                });
+                            <?php endif; ?>
+                        };
+                    </script>   
+                <?php 
                 }
             } else {
                 $errorMsg = ' You\'re Not Allowed To Be Here';
-
                 redirect($errorMsg , 4 , 'Dashboard.php');
             }
             echo '</div>';

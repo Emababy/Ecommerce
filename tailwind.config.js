@@ -22,6 +22,7 @@ module.exports = {
             './**/*login.php',
             './**/*SignUp.php',
             './**/*profile.php',
+            './**/*ShowAds.php',
             './**/*InitLoginSignUp.php',
             './layout/js/**/*.js',
             './layout/css/**/*.css',

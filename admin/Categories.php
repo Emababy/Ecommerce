@@ -39,45 +39,43 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <?php foreach ($cats as $index => $category): ?>
-                            <div class="flex flex-col">
-                                <div class="bg-gray-700 p-3 rounded-md flex items-center justify-between">
-                                    <div>
-                                        <!-- Use a class instead of an ID for the h3 element -->
-                                        <h3 class="text-lg font-semibold mb-2 cursor-pointer categoryName" data-index="<?php echo $index; ?>"><?php echo $category['Name']; ?></h3>
-                                        <!-- Use a unique identifier for each toggle-details div -->
-                                        <div class="toggle-details toggle-details-<?php echo $index; ?> hidden transition-ease">
-                                            <p class="text-gray-400 mb-2">
-                                                <?php echo ($category['Description'] == '') ? "There's No Description" : $category['Description']; ?>
-                                            </p>
-                                            <p>
-                                                <span class="font-bold"></span>
-                                                <?php echo ($category['Ordering'] == null) ? "" : "Ordering: " . $category['Ordering']; ?>
-                                            </p>
-                                            <p>
-                                                <span class="font-bold" style='<?php echo ($category['Visibility'] == 1) ? "color: red;" : "color: green;"; ?>'>
-                                                    Visibility: <?php echo ($category['Visibility'] == 1) ? "<i class='fa-solid fa-eye-slash'></i>" : "<i class='fa-solid fa-eye'></i>"; ?>
-                                                </span>
-                                            </p>
-                                            <p>
-                                                <span class="font-bold" style='<?php echo ($category['AllowComment'] == 1) ? "color: red;" : "color: green;"; ?>'>
-                                                    Commenting: <?php echo ($category['AllowComment'] == 1) ? "<i class='fa-solid fa-lock'></i>" : "<i class='fa-solid fa-check'></i>"; ?>
-                                                </span>
-                                            </p>
-                                            <p>
-                                                <span class="font-bold" style='<?php echo ($category['AllowAds'] == 1) ? "color: red;" : "color: green;"; ?>'>
-                                                    Ads: <?php echo ($category['AllowAds'] == 1) ? "<i class='fa-solid fa-lock'></i>" : "<i class='fa-solid fa-check'></i>"; ?>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-col justify-center">
-                                        <a href='Categories.php?action=Edit&catid=<?php echo $category['ID'] ?>' class="p-3 text-green-400 hover:text-green-600 hover:font-medium cursor-pointer">
-                                            <i class="fa-solid fa-user-pen"></i>
-                                        </a>
-                                        <a href='Categories.php?action=Delete&catid=<?php echo $category['ID'] ?>' class="p-3 text-red-400 hover:text-red-600 hover:font-medium cursor-pointer">
-                                            <i class="fa-solid fa-user-xmark"></i>
-                                        </a>
-                                    </div>
+                            <div class="flex flex-col bg-gray-700 p-3 rounded-md mb-4">
+                                <div class="mb-2">
+                                    <h3 class="text-lg font-semibold cursor-pointer categoryName" data-index="<?php echo $index; ?>">
+                                        <?php echo $category['Name']; ?>
+                                    </h3>
+                                </div>
+                                <div class="toggle-details toggle-details-<?php echo $index; ?> hidden transition-ease">
+                                    <p class="text-gray-400 mb-2">
+                                        <?php echo ($category['Description'] == '') ? "There's No Description" : $category['Description']; ?>
+                                    </p>
+                                    <p>
+                                        <span class="font-bold"></span>
+                                        <?php echo ($category['Ordering'] == null) ? "" : "Ordering: " . $category['Ordering']; ?>
+                                    </p>
+                                    <p>
+                                        <span class="font-bold" style='<?php echo ($category['Visibility'] == 1) ? "color: red;" : "color: green;"; ?>'>
+                                            Visibility: <?php echo ($category['Visibility'] == 1) ? "<i class='fa-solid fa-eye-slash'></i>" : "<i class='fa-solid fa-eye'></i>"; ?>
+                                        </span>
+                                    </p>
+                                    <p>
+                                        <span class="font-bold" style='<?php echo ($category['AllowComment'] == 1) ? "color: red;" : "color: green;"; ?>'>
+                                            Commenting: <?php echo ($category['AllowComment'] == 1) ? "<i class='fa-solid fa-lock'></i>" : "<i class='fa-solid fa-check'></i>"; ?>
+                                        </span>
+                                    </p>
+                                    <p>
+                                        <span class="font-bold" style='<?php echo ($category['AllowAds'] == 1) ? "color: red;" : "color: green;"; ?>'>
+                                            Ads: <?php echo ($category['AllowAds'] == 1) ? "<i class='fa-solid fa-lock'></i>" : "<i class='fa-solid fa-check'></i>"; ?>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="flex justify-between mt-2">
+                                    <a href='Categories.php?action=Edit&catid=<?php echo $category['ID'] ?>' class="text-green-400 hover:text-green-600 hover:font-medium cursor-pointer">
+                                        <span class="material-symbols-outlined">edit</span>
+                                    </a>
+                                    <a href='Categories.php?action=Delete&catid=<?php echo $category['ID'] ?>' class="text-red-400 hover:text-red-600 hover:font-medium cursor-pointer">
+                                    <span class="material-symbols-outlined">delete</span>
+                                    </a>
                                 </div>
                             </div>
                         <?php endforeach; ?>

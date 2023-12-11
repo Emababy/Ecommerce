@@ -39,22 +39,22 @@
                     <!-- component Cards -->
                     <div class="container mx-auto flex flex-wrap items-center justify-center my-5 text-center">
                         <?php foreach ($items as $item) { ?>
-                            <div class="max-w-sm rounded overflow-hidden shadow-lg mx-2 my-2 ">
+                            <div class="max-w-sm rounded overflow-hidden shadow-lg mx-2 my-2 cursor-pointer">
 
                                 <!-- Image (if you have one) -->
-                                <!-- <img class="w-full" src="<?php echo $item['Image']; ?>" alt="Item Image"> -->
+                                <img class="w-full" src="layout/images/5856.jpg" alt="Item Image">
 
-                                <div class="px-6 py-4 cursor-pointer">
+                                <div class="px-6 py-4">
                                     <div class="font-bold text-xl mb-2"><?php echo $item['Name']; ?></div>
-                                    <p class="text-green-600 text-base">Price: <?php echo $item['Price']; ?></p>
-                                    <p class="text-indigo-600 text-base">Category: <?php echo $item['Cat_Name']; ?></p>
+                                    <p class="text-green-600 text-base"><?php echo $item['Price']; ?></p>
+                                    <p class="text-indigo-600 text-base"><?php echo $item['Cat_Name']; ?></p>
                                     <p class="text-purple-600 text-base">Seller: <?php echo $item['Member_Name']; ?></p>
                                     <p class="text-gray-700 text-base"><?php echo $item['Add_Date']; ?></p>
                                 </div>
 
-                                <div class="px-6 py-4 text-sm">
-                                    <a href='Items.php?action=Edit&ItemID=<?php echo $item['Item_ID'] ?>' class="text-green-400 hover:text-green-600 hover:font-medium cursor-pointer mr-2"><i class="fa-solid fa-user-pen"></i></a>
-                                    <a href='Items.php?action=Delete&ItemID=<?php echo $item['Item_ID'] ?>' class="text-red-400 hover:text-red-600 hover:font-medium cursor-pointer"><i class="fa-solid fa-user-xmark"></i></a>
+                                <div class="px-6 py-4 text-sm text-center">
+                                    <a href='Items.php?action=Edit&ItemID=<?php echo $item['Item_ID'] ?>' class="text-green-400 hover:text-green-600 hover:font-medium cursor-pointer mr-2"><span class="material-symbols-outlined">edit</span></a>
+                                    <a href='Items.php?action=Delete&ItemID=<?php echo $item['Item_ID'] ?>' class="text-red-400 hover:text-red-600 hover:font-medium cursor-pointer"><span class="material-symbols-outlined">delete</span></a>
                                     <?php if ($item['Approve'] == 0): ?>
                                         <a href='Items.php?action=Approved&ItemID=<?php echo $item['Item_ID'] ?>' class="p-3 text-blue-400 hover:text-blue-600 hover:font-medium cursor-pointer"><i class="fa-solid fa-check"></i></a>
                                     <?php endif; ?>
@@ -158,7 +158,7 @@
                                 </div>
                                 <!-- button -->
                                 <div>
-                                    <button value="Add" type="submit" class="hover:scale-95 transition-ease duration-500 hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">Add Category</button>
+                                    <button value="Add" type="submit" class="hover:scale-95 transition-ease duration-500 hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">Add Item</button>
                                 </div>
                             </form>
                         </div>
@@ -174,38 +174,8 @@
             // check in Item_ID and make sure it numeric:
             $ItemID = isset($_GET['ItemID']) && is_numeric($_GET['ItemID']) ? intval($_GET['ItemID']) : 0;
 
-            // Check on all data based on Item_ID
-            $check = CheckDb('Item_ID', 'items' , $ItemID);
-
-            if ($check > 0) {
-
-                $stmt = $con->prepare("DELETE FROM items WHERE Item_ID = :ItemID");
-
-                // link the id of the item to the database:
-                $stmt->bindParam(":ItemID", $ItemID); // Use ":ItemID" with the colon
-                // execute the delete 
-                $stmt->execute();
-                ?>
-                    <script>
-                        window.onload = function() {
-                            <?php if ($stmt->rowCount() > 0): ?>
-                                swal({
-                                    title: "Success",
-                                    text: "Item Deleted",
-                                    icon: "success",
-                                }).then(() => {
-                                    window.location.href = 'Items.php?action=Manage';
-                                });
-                            <?php endif; ?>
-                        };
-                    </script>
-
-<?php   } 
-
-        else {
-                $errorMsg = $stmt->rowCount() . ' Item Found';
-                redirect($errorMsg , 4 , 'Dashboard.php');
-            }
+            // deleteRecord('your_table', 'your_column', $your_record_id,items);
+            deleteRecord('items','Item_ID',$ItemID,'Items');
 
         echo "</div>";
 

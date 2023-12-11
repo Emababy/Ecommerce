@@ -184,7 +184,6 @@ function checkUserStatus($username) {
      *
      * This function counts the number of occurrences of a specific item in a given table.
      *
-     * @global PDO $con The global PDO (PHP Data Objects) database connection object.
      * @param string $item The item to count.
      * @param string $table The table to select for counting.
      * @return int The number of occurrences of the specified item in the table.
@@ -222,7 +221,7 @@ function checkUserStatus($username) {
      * @param int $limit The maximum number of records to retrieve (default is 5).
      * @return array An array of associative arrays containing the retrieved records.
      */
-    function getLatest($select, $table, $order, $where = null, $limit = 5) {
+    function getLatest($select, $table, $order, $where = null, $limit = 3) {
         global $con;
 
         $whereClause = ($where !== null) ? "WHERE $where" : '';
@@ -264,5 +263,68 @@ function checkUserStatus($username) {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    
+    // Example usage:
+// deleteRecord('your_table', 'your_column', $your_record_id,items);
+
+/**
+ * Delete a record from the database based on the provided parameters.
+ *
+ * @param string $tableName  The name of the table.
+ * @param string $columnName The name of the column to identify the record.
+ * @param mixed $id          The value of the identifier to delete the record.
+ * @param string $redirectUrl The URL to redirect to after the operation.
+ */
+function deleteRecord(string $tableName, string $columnName, $id, string $redirectUrl): void {
+    global $con;
+    try {
+        // Check if the record exists in the database.
+        $check = checkDb($columnName, $tableName, $id);
+
+        if ($check > 0) {
+            // Prepare and execute the SQL query to delete the record.
+            $stmt = $con->prepare("DELETE FROM $tableName WHERE $columnName = :id");
+            $stmt->bindParam(":id", $id);
+            $stmt->execute();
+
+            // Output JavaScript code to redirect on success.
+            ?>
+            <script>
+                window.onload = function() {
+                    <?php if ($stmt->rowCount() > 0): ?>
+                        swal({
+                            title: "Success",
+                            text: "<?= $tableName ?> Deleted",
+                            icon: "success",
+                        }).then(() => {
+                            window.location.href = '<?= $redirectUrl ?>.php?action=Manage';
+                        });
+                    <?php endif; ?>
+                };
+            </script>
+            <?php 
+        } else {
+            // Output JavaScript code or handle the case when the record doesn't exist.
+            ?>
+            <script>
+                window.onload = function() {
+                    swal({
+                        title: "Error",
+                        text: "<?= $tableName ?> Not Found",
+                        icon: "error",
+                    }).then(() => {
+                        window.location.href = '<?= $redirectUrl ?>.php?action=Manage';
+                    });
+                };
+            </script>
+            <?php 
+        }
+    } catch (PDOException $e) {
+        // Handle any exceptions (errors) that occur during the execution of the query.
+        // You might want to log the error or handle it in a way that makes sense for your application.
+        throw new PDOException("Error deleting record from $tableName: " . $e->getMessage(), (int)$e->getCode());
+    }
+}
+
+
+
 ?>

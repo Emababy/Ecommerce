@@ -63,7 +63,7 @@
                                     <h2 class="font-bold text-lg mb-2 "><i class="fa-solid fa-users mx-2"></i>The Latest Users</h2>
                                     <div>
                                         <?php 
-                                            $theLatest  = getLatest("*", "users" , "UserID" , "GroupID" != 1 , $limit = 4);
+                                            $theLatest  = getLatest("*", "users" , "UserID" , "GroupID" != 1 , 4);
                                             foreach($theLatest as $user){ ?>
                                                 <div class="flex justify-between items-center">
                                                     <h3 class ="my-3 px-5"><?php echo $user["Username"] ?></h3>
@@ -90,13 +90,13 @@
                                     <h2 class="font-bold text-lg mb-2"><i class="fa-solid fa-paperclip mx-2"></i>The Latest Items</h2>
                                     <div>
                                         <?php 
-                                            $theLatest  = getLatest("*", "items"  , "Item_ID" , $limit = 4);
+                                            $theLatest  = getLatest("*", "items"  , "Item_ID" , null , 4);
                                             foreach($theLatest as $item){ ?>
                                                 <div class="flex justify-between items-center">
                                                     <h3 class ="my-3 px-5"><?php echo $item["Name"] ?></h3>
                                                     <div class ="flex justify-center items-center">
                                                             <a href="Items.php?action=Edit&ItemID=<?php echo $item['Item_ID']?>">
-                                                                <i class="fa-solid fa-user-pen p-3 text-green-400 hover:text-green-600 hover:font-medium cursor-pointer"></i>
+                                                                <span class="material-symbols-outlined p-3 text-green-400 hover:text-green-600 hover:font-medium cursor-pointer">edit</span>
                                                             </a>
                                                             <?php 
                                                             if($item['Approve'] == 0){?>

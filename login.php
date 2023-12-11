@@ -7,27 +7,33 @@
     }
     include 'InitLoginSignUp.php';
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $Username = $_POST['Username'];
         $Password = $_POST['Password'];
-    
+
         // Check if the user exists
         $stmt = $con->prepare("SELECT UserID, Username, Password, GroupID FROM users WHERE Username = ?");
         $stmt->execute(array($Username));
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
         if ($userData) {
             // Verify the entered password with the stored hashed password
             if (password_verify($Password, $userData['Password'])) {
                 $_SESSION['User'] = $Username;  // Save session name 
-                header('Location: index.php');  // Redirect to index page
+                $_SESSION['User_ID'] = $userData['UserID'];
+
+                // Check the GroupID and redirect accordingly
+                if ($userData['GroupID'] == 1) {
+                    header('Location: admin/dashboard.php');  // Redirect to dashboard page for admins
+                } else {
+                    header('Location: index.php');  // Redirect to index page for regular users
+                }
                 exit();
             } else {
-                echo '<div class="alert alert-danger">Invalid username or password</div>';
+                $formErr[] = '<strong>Invalid username or password</strong>';
             }
         } else {
-            echo '<div class="alert alert-danger">Invalid username or password</div>';
+            $formErr[] = '<strong>Invalid username or password</strong>';
         }
     }
 
@@ -66,6 +72,12 @@
             </div>
             <div class="flex w-full lg:w-1/2 justify-center items-center bg-white space-y-8">
                 <div class="w-full px-8 md:px-32 lg:px-24">
+                <?php
+                    // Display errors only if $formErr is not empty
+                    if (!empty($formErr)) {
+                        displayErrors($formErr);
+                    }
+                ?>
                 <form class="bg-white rounded-md shadow-2xl p-5" action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
                     <h1 class="text-gray-800 font-bold text-2xl mb-1">Hello Again!</h1>
                     <p class="text-sm font-normal text-gray-600 mb-8">Welcome Back</p>

@@ -47,18 +47,22 @@
                 if (!empty(getItem('Member_ID', $info['UserID']))){
 
                     foreach (getItem('Member_ID', $info['UserID']) as $item): ?>
-                        <div class="max-w-sm rounded overflow-hidden shadow-lg bg-gray-800">
-                            <!-- Image (if you have one) -->
-                            <!-- <img class="w-full" src="<?php echo $item['Image']; ?>" alt="Item Image"> -->
+                        <div class="max-w-sm rounded overflow-hidden shadow-lg bg-gray-800 cursor-pointer">
+                            <a href="ShowAds.php?ItemID=<?php echo $item['Item_ID'] ?>">
+                                <img class="w-1/2 h-1/2" src="layout/images/5856.jpg" alt="Item Image">
 
-                            <div class="px-6 py-4">
-                                <div class="font-bold text-xl mb-2 text-white"><?php echo $item['Name']; ?></div>
-                                <p class="text-green-600 text-base font-semibold">Price: <?php echo $item['Price']; ?></p>
-                            </div>
+                                <div class="px-6 py-4">
+                                    <div class="font-bold text-xl mb-2 text-white"><?php echo $item['Name']; ?></div>
+                                    <p class="text-green-600 text-base font-semibold">Price: <?php echo $item['Price']; ?></p>
+                                </div>
+                            </a>
                         </div>
+                        
                 <?php endforeach; 
+                    echo '<a href="Items.php" class="text-gray-800">Add New Item</a>';
                 } else { ?>
                     <p class="text-black mx-auto px-2">No Items to show.</p>
+                    <a href="Items.php">Add New Item</a>
                 <?php }?>
         </div>
     </div>
