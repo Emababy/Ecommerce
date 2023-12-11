@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap');
+
+.login_img_section {
+    background: linear-gradient(rgba(2,2,2,.7),rgba(0,0,0,.7)),url(https://images.unsplash.com/photo-1650825556125-060e52d40bd0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80) center center;
+}
+
+.btn {
+    @apply shadow-md py-3 px-6 rounded-md uppercase duration-300;
+}
+
+.btn-orange {
+    @apply bg-Nike-black text-white;
+}
+
+.alert-div{
+    background-color: rgba(255, 80, 80, 0.456);
+    border-radius: 10px;
+    border: rgb(160, 109, 109) solid 1px;
+}
+
+@media (min-width: 640px)  {
+    table {
+        display: inline-table !important;
+    }
+
+    thead tr:not(:first-child) {
+        display: none;
+    }
+}
+
+td:not(:last-child) {
+    border-bottom: 0;
+}
+
+th:not(:last-child) {
+    border-bottom: 2px solid rgba(0, 0, 0, .1);
+}
+
+.home-stats .stat {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 20px 0;
+}
+
+.home-stats .stat span{
+    display: block;
+    margin-bottom: 10px;
+}

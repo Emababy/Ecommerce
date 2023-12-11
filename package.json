@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "build:tailwinds-admin": "tailwindcss -i ./src/style.css -o ./admin/layout/css/backend.css --watch",
+    "build:tailwinds-user": "tailwindcss -i ./src/style.css -o ./layout/css/style_user.css --watch"
+  },
+  "devDependencies": {
+    "daisyui": "^3.9.4",
+    "tailwindcss": "^3.3.5"
+  },
+  "dependencies": {
+    "alpine": "^0.2.1",
+    "bootstrap": "^5.3.2",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.9.0",
+    "swiper": "^11.0.3"
+  }
+}
