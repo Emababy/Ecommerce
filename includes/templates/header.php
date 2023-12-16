@@ -44,7 +44,7 @@
                                 <div class="px-2 pt-2 pb-2 bg-white rounded-md shadow-lg dark-mode:bg-gray-700 max-w-xs"> 
                                     <div class="grid gap-2 items-center z-30">
                                         <?php foreach (getCats() as $category): ?>
-                                            <a href="Categories.php?PageID=<?php echo $category['ID']; ?>&PageName=<?php echo str_replace(' ','-',$category['Name']); ?>" class="z-30 flex items-center rounded-lg bg-transparent p-2 duration-300 transition-ease hover:text-indigo-400">
+                                            <a href="Categories.php?PageID=<?php echo $category['ID']; ?>" class="z-30 flex items-center rounded-lg bg-transparent p-2 duration-300 transition-ease hover:text-indigo-400">
                                                 <p class="text-sm font-semibold"><?php echo $category['Name']; ?></p>
                                             </a>
                                             <?php endforeach; ?>

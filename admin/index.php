@@ -31,6 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: dashboard.php');  // redirect to dashboard page
             exit();
         }
+    } else {
+        $formErr[] = '<strong>Invalid username or password</strong>'; 
     }
 }
 ?>
@@ -49,6 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="flex w-full lg:w-1/2 justify-center items-center bg-white space-y-8">
                 <div class="w-full px-8 md:px-32 lg:px-24">
+                <?php
+                    // Display errors only if $formErr is not empty
+                    if (!empty($formErr)) {
+                        displayErrors($formErr);
+                    }
+                ?>
                 <form class="bg-white rounded-md shadow-2xl p-5" action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
                     <h1 class="text-gray-800 font-bold text-2xl mb-1">Hello Again!</h1>
                     <p class="text-sm font-normal text-gray-600 mb-8">Welcome Back</p>

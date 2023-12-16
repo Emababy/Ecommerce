@@ -49,7 +49,7 @@
                     foreach (getItem('Member_ID', $info['UserID']) as $item): ?>
                         <div class="max-w-sm rounded overflow-hidden shadow-lg bg-gray-800 cursor-pointer">
                             <a href="ShowAds.php?ItemID=<?php echo $item['Item_ID'] ?>">
-                                <img class="w-1/2 h-1/2" src="layout/images/5856.jpg" alt="Item Image">
+                                <img class="w-full h-3/4" src="layout/images/5856.jpg" alt="Item Image">
 
                                 <div class="px-6 py-4">
                                     <div class="font-bold text-xl mb-2 text-white"><?php echo $item['Name']; ?></div>

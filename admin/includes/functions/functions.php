@@ -8,13 +8,13 @@
  *
  * @return void
  */
-function displayErrors($errors)
-{
+function displayErrors($errors){
     if (!empty($errors)) {
         echo '<div class="error-container my-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">';
         echo '<strong class="font-bold">Error!</strong>';
         echo '<span class="block sm:inline"> Please check the following issues:</span>';
         echo '<div class="error-message my-2">' . implode('</div><div class="error-message my-2">', $errors) . '</div>';
+
         echo '</div>';
     }
 }

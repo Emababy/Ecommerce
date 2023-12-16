@@ -1,12 +1,12 @@
 <?php 
     ob_start();
     session_start();
-    $pageTitle = "Categories / " . $_GET["PageName"];
+    $pageTitle = "Categories";
     include 'init.php';
 ?>
 
         <h1 class="text-center md:text-3xl sm:text-xl text-indigo-800">
-            <?php echo str_replace('-' , ' ' , $_GET["PageName"]) ?>
+            Categories
         </h1>
 
 
@@ -41,7 +41,7 @@
                                     <div class="font-bold text-xl mb-2"><?php echo $item['Name']; ?></div>
                                     <p class="text-red-600 text-base">Seller: <?php echo $item['Member_Name']; ?></p>
                                     <p class="text-green-600 text-base">Price: <?php echo $item['Price']; ?></p>
-                                    <a href="ShowAds.php?ItemID=<?php echo $item["Item_ID"]; ?>"><button class="hover:scale-95 transition-ease duration-500 hover:shadow-form rounded-md bg-[#6A64F1] p-2 my-2 text-base font-semibold text-white outline-none">Buy Now</button></a>
+                                    <a href="ShowAds.php?ItemID=<?php echo $item["Item_ID"]; ?>"><button class="hover:scale-95 transition-ease duration-500 hover:shadow-form rounded-md bg-[#6A64F1] p-2 my-2 text-base font-semibold text-white outline-none">Discover Now</button></a>
                                 </div>
                             </a>
                         </div>
